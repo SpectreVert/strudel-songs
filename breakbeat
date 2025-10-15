@@ -1,0 +1,44 @@
+samples('github:yaxu/clean-breaks')
+
+//sound("bd*4, [~ <sd cp>]*2, [~ hh]*4")
+
+const breakPatterns = [
+  
+  "{0 1 <2 2*2> 3 [4 0] 5 6 7}%8",
+  "{0 <0 1 2 3> 4 5 <0 6> 0 5}%8",
+  "{5 5 3 5}%8",
+  "{0}%8",
+  "{0}%16",
+  "{9}%16",
+];
+const beatMash = slider(0, 0, 6, 1);
+const breakNumCycles = 2;
+
+$: note(36).sound("riffin")
+.loopAt(breakNumCycles)
+.slice(8 * breakNumCycles, pick(beatMash, breakPatterns))
+.cut(1)
+.lpf(10000)
+.room(.1)
+.hpf(0)
+.postgain(.75)
+.color("magenta")
+
+$: stack(
+note(36).sound("RolandSystem100_bd")
+.struct("{1 0 0 1 0}%4")
+.cut(15)
+,
+note(36).sound("RolandTR707_cp")
+.struct("{0 1 0 1}%4")
+.echo(3, 1/16, .2)
+.velocity(0.6)
+.cut(15)
+)
+.sometimesBy(0.05, ply(choose("2", "4")))
+.postgain(0.6)
+
+$: note(36).sound("RolandTR808_hh")
+.struct("{1}%8")
+.sometimesBy(0.05, ply(choose("2", "4")))
+.gain("0.3")
