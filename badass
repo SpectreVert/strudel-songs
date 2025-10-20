@@ -23,12 +23,30 @@ const hhat = sound("hh").bank("RolandTR909")
 .lpf(12000)
 .hpf(0)
 ._scope()
+//.hush()
+
+const bass = note("<[c2 c3]*4 [bb1 bb2]*4 [f2 f3]*4 [eb2 eb3]*4>")
+.sound("gm_synth_bass_1")
+.lpf(800) // <-- we'll learn about this soon
+._punchcard()
+
+
+const string_bass = note("<[c2@2 ~ c2@2 ~]>*4, [ <f2!2 f3 gb3>,  <f5 f1 [c3!4] [f2!8]>, <~ f3 ~ ~>]")
+.sound("gm_pizzicato_strings")
+.scale("C4:minor")
+.lpf(1200)
+  
+._punchcard()
+
 
 const drums = stack(
  kick,
-  hhat,
+ hhat,
+// saws,
 )
 
 $: stack(
-  drums
+  drums,
+  bass,
+  string_bass
 )
