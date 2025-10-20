@@ -1,0 +1,34 @@
+samples('github:yaxu/clean-breaks')
+
+setcpm(140/4)
+
+const kick = sound("lt!4").bank("RolandTR808")
+.delay(.33)
+.room(.8).size(2)
+.postgain(1.1)
+.stack(
+  sound("lt!4").bank("RolandTR808")
+  .postgain(.6)
+)
+.lpf(sine.range(300,2000).slow(16))
+._scope()
+
+const hhat = sound("hh").bank("RolandTR909")
+.struct("{x x}%2 x x x")
+.stack(
+  sound("hh").bank("RolandTR909")
+  .struct("x ~ ~ ~ x x ~ ~ ~")
+)
+.postgain(.15)
+.lpf(12000)
+.hpf(0)
+._scope()
+
+const drums = stack(
+ kick,
+  hhat,
+)
+
+$: stack(
+  drums
+)
